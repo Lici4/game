@@ -1,0 +1,59 @@
+<style>
+    img{user-drag:none; -webkit-user-drag:none;  user-select: none; -webkit-user-select:none;}
+    body{background-image:url("background.jpg"); overflow:hidden}
+    </style>
+
+<iframe src="silence.mp3" allow="autoplay" id="audio" style="display: none"></iframe>
+<audio id="player" autoplay loop>
+    <source src="pacman.mp3" type="audio/mp3">
+</audio>
+
+    <body></body>
+     
+    <script> 
+     
+    function spawnVirus(event) {
+        var virus = document.createElement("img");
+        virus.src = "virus.gif?a="+Math.random();
+        document.body.appendChild(virus);
+        virus.style.position = "absolute";
+        virus.style.top = document.body.clientHeight*Math.random()-100;
+        virus.style.left = -200;
+     
+        virusok.push(virus);
+        
+        virus.addEventListener("mousedown", robban);
+    }
+     
+    function robban(event) {
+        var virus = event.target;
+        document.body.removeChild(virus);
+        virusok.splice( virusok.indexOf(virus), 1 );
+        var bumm = document.createElement("img");
+        bumm.src = "bumm.gif?a="+Math.random();
+        document.body.appendChild(bumm);
+        bumm.style.position = "absolute"
+        bumm.style.top = event.clientY-100
+        bumm.style.left = event.clientX-100
+        bumm.style.pointerEvents = 'none';
+        var robbanHang = new Audio('fire.mp3');
+        robbanHang.play();
+        setTimeout( function(){document.body.removeChild(bumm);}, 700);
+    }
+     
+    function mindentmozgat() {
+        for(var i=0; i<virusok.length; i++) {
+            virusok[i].style.left = parseInt(virusok[i].style.left) + 3;
+            if (parseInt(virusok[i].style.left) > document.body.clientWidth){
+                document.body.removeChild(virusok[i]);
+                virusok.splice( i, 1 );
+            }
+        }
+    }
+     
+    setInterval(mindentmozgat, 10);
+    setInterval(spawnVirus, 500);
+     
+    var virusok = [];
+     
+    </script>
